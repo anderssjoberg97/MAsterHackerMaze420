@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>Javascript Programming</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+td {
+font-family: Verdana;
+
+font-size: 11px;
+ } 
+
+input {
+font-family: Verdana;
+font-size: 11px;
+ } 
+
+table {
+border-style: solid;
+border-width: 3px;
+border-color: black;
+border-radius: 20px;
+padding: 10px; 
+box-shadow: 10px 10px 17px #888888;
+}
+
+#mitti {
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+    #canvas{
+        width: 300;
+        height: 300;
+    }
+
+
+</style>
+<script src="script.js"></script>
+<script src="canvaslib.js"></script>
+</head>
+<body onload="init(400,300)">
+<table id="mitti" cellspacing=5 cellpadding=5>
+<tr>
+<td colspan=3 id="toppruta"><b>Javascript Programming</b></td>
+</tr>
+<tr>
+<td>indata1</td>
+<td><input type="text" size="33" value="" id="indata1"></td>
+<td rowspan=4 id="visaprylar"><canvas id="canvas"></canvas></td>
+</tr>
+<tr>
+<td>indata2</td>
+<td><input type="text" size="33" value="" id="indata2"></td>
+</tr>
+<tr>
+<td>utdata</td>
+<td><textarea rows="7" cols="35" id="utdata"></textarea></td>
+</tr>
+<td></td>
+<td colspan=2>
+</td>
+    <tr>
+    <td></td>
+    <td><input type="submit" value="labyrint" onclick='InitMaze()'></td>
+    </tr>
+</table>
+</body>
+</html>
