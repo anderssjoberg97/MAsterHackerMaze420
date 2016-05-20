@@ -4,18 +4,29 @@ function init(x, y){
 }
 
 var rectangle = {x: 0, y: 0};
+var xx = 0;
+var yy = 0;
 
 function start()
 {
     InitMaze();
-    rectangle.x = totalWidth-28.75;
-    rectangle.y = totalHeight-28.75;
+    rectangle.x = totalWidth-30;
+    rectangle.y = totalHeight-30;
 }
+
 
 function update()
 {
+    debugger
+    RectangleRoom(); 
+    var rectangleLocation = room[xx][yy];
+    console.log(room[xx][yy]);
+    if (keyboard.left) {
+        rectangle.x-=3;
+        ctx.clearRect(rectangle.x+3, rectangle.y, 21, 21);
+        
+        }
     
-    if (keyboard.left) {rectangle.x-=3;ctx.clearRect(rectangle.x+3, rectangle.y, 21, 21);}
     if (keyboard.right) {rectangle.x+=3;ctx.clearRect(rectangle.x-3, rectangle.y, 21, 21);}
     if (keyboard.up) {rectangle.y-=3;ctx.clearRect(rectangle.x, rectangle.y+3, 21, 21);}
     if (keyboard.down) {rectangle.y+=3;ctx.clearRect(rectangle.x, rectangle.y-3, 21, 21);}
@@ -23,8 +34,10 @@ function update()
     if (rectangle.x==0){rectangle.x=0}
     if (rectangle.x==canvas.width){rectangle.x=canvas.width-20;}
     
-        
+    drawMaze();    
     rectangle(rectangle.x, rectangle.y, 20, 20, "blue");  
+    
+    
 
 }
 var room = [];
