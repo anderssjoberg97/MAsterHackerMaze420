@@ -12,6 +12,8 @@ var xx = 0;
 var yy = 0;
 
 
+    
+
 function start()
 {
     level++;
@@ -33,16 +35,19 @@ function update()
     drawMaze();
     RectangleRoom(); 
     RectangleRoom2();
+    
     if (keyboard.left) {Left(); ctx.clearRect(rectangle.x, rectangle.y, 20, 20);}
     if (keyboard.right) {Right();ctx.clearRect(rectangle.x, rectangle.y, 20, 20);}
     if (keyboard.up) {Up();ctx.clearRect(rectangle.x, rectangle.y, 20, 20);}
     if (keyboard.down) {Down();ctx.clearRect(rectangle.x, rectangle.y, 20, 20);}
+    
     rectangle(rectangle.x, rectangle.y, 20, 20, "blue");
     rectangle(0,0,45,45,"green");
     rectangle(rectangle.x,rectangle.y,2,2,"red")
     rectangle(rectangle.x2,rectangle.y2,2,2,"red")
     if (rectangle.x < 30 && rectangle.y < 30){
         UWIN();
+        clearScreen();
         
     }
     
@@ -50,7 +55,6 @@ function update()
 
 }
 function UWIN(){
-    stopUpdate();
     clearScreen();
     text(10,100,20,"Congratz, beat level:"+level, "gold")
 }
