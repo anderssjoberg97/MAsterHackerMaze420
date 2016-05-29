@@ -10,7 +10,7 @@ var x=0;
 var y=0;
 var xx = 0;
 var yy = 0;
-
+var room = [];
 
     
 
@@ -18,7 +18,6 @@ function start()
 {
     level++;
     InitMaze();
-    debugger
     rectangle.x = totalWidth-30;
     rectangle.y = totalHeight-30;
     rectangle.x2 = totalWidth-12;
@@ -31,7 +30,6 @@ function start()
 
 function update()
 {
-    debugger
     drawMaze();
     RectangleRoom(); 
     RectangleRoom2();
@@ -51,14 +49,20 @@ function update()
         
     }
     
-   
-
 }
+
 function UWIN(){
     clearScreen();
     text(10,100,20,"Congratz, beat level:"+level, "gold")
 }
+function whichRoomX(x){
+    return Math.floor(x/(canvas.width/room.length));
+}
+function whichRoomY(y){
+    return Math.floor(y/(canvas.height/room[0].length));
+}
 function RectangleRoom(){
+
     var t = [0, 45, 90, 135, 180, 225, 270, 315];
     var Rx = Math.floor(((rectangle.x)/45))*45;
     var Ry = Math.floor(((rectangle.y)/45))*45;
@@ -156,7 +160,7 @@ function Down(){
 }
 
 
-var room = [];
+
 
 function InitMaze(){
 
