@@ -61,17 +61,6 @@ function whichRoomX(x){
 function whichRoomY(y){
     return Math.floor(y/(canvas.height/room[0].length));
 }
-function RectangleRoom(){
-
-    var t = [0, 45, 90, 135, 180, 225, 270, 315];
-    var Rx = Math.floor(((rectangle.x)/45))*45;
-    var Ry = Math.floor(((rectangle.y)/45))*45;
-    if (Rx == -1){Rx=315;}
-    if (Ry == -1){Ry=315;}
-    x = t.indexOf(Rx);
-    y = t.indexOf(Ry);
-}
-    
 function RectangleRoom2(){
     var t = [0, 45, 90, 135, 180, 225, 270, 315];
     var Rx = Math.floor(((rectangle.x2)/45))*45;
