@@ -31,8 +31,7 @@ function start()
 function update()
 {
     drawMaze();
-    RectangleRoom(); 
-    RectangleRoom2();
+
     
     if (keyboard.left) {Left(); ctx.clearRect(rectangle.x, rectangle.y, 20, 20);}
     if (keyboard.right) {Right();ctx.clearRect(rectangle.x, rectangle.y, 20, 20);}
@@ -61,36 +60,15 @@ function whichRoomX(x){
 function whichRoomY(y){
     return Math.floor(y/(canvas.height/room[0].length));
 }
-function RectangleRoom2(){
-    var t = [0, 45, 90, 135, 180, 225, 270, 315];
-    var Rx = Math.floor(((rectangle.x2)/45))*45;
-    var Ry = Math.floor(((rectangle.y2)/45))*45;
-    if (Rx == -1){Rx=315;}
-    if (Ry == -1){Ry=315;}
-    xx = t.indexOf(Rx);
-    yy = t.indexOf(Ry);
-    
-}
 
 function Left(){
-    if (room[x][y].w == false && walls1.indexOf((rectangle.x-3)) != -1){
-        rectangle.x-=2;
-        rectangle.x2-=2;
+    if(whichRoomX(rectangle.x-3)==whichRoomX(rectangle.x)){
+        rectangle.x-=3;
+    }else if(room[whichRoomX(rectangle.x)][whichRoomY(rectangle.y)].w && room[whichRoomX(rectangle.x)][whichRoomY(rectangle.y+20)].w){
+        rectangle.x-=3;
+    }else{
+        rectangle.x-=rectangle.x-(whichRoomX(rectangle.x)*((canvas.width/room.length)));
     }
-    else if (room[x][y].w == false && walls1.indexOf((rectangle.x-2)) != -1){
-        rectangle.x--;
-        rectangle.x2--;
-    }
-    else if (room[x][y].w == false && walls1.indexOf((rectangle.x-1)) != -1 ||
-             room[xx][yy].w == false && walls1.indexOf((rectangle.x2-19)) != -1 ||
-             room[x-1][y].s == false && room[x][y] != room[x][yy] && rectangle.x-1==x*45)
-    {
-                
-                rectangle.x-=0;
-                rectangle.x2-=0;
-    }
-  
-    else {rectangle.x-=3;rectangle.x2-=3;}
 }
 
 function Right(){
