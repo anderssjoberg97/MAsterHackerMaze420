@@ -15,7 +15,6 @@ function start()
 {
     level++;
     InitMaze();
-    debugger
     spawnenemy();
     rectangle.x = totalWidth-30;
     rectangle.y = totalHeight-30;
@@ -43,8 +42,8 @@ function update()
 
 function spawnenemy(){
     if (level == 1){
-        enemy[0]={x:195, y:195, xtarget: 0, ytarget: 0, direction:0};
-        enemy[1]={x:285, y:105, xtarget: 0, ytarget: 0, direction:0};
+        enemy[0]={x:195, y:195, xtarget: null, ytarget: null, direction:null};
+        enemy[1]={x:285, y:105, xtarget: null, ytarget: null, direction:null};
     }
     else if (level == 2){}
     else if (level == 3){}
@@ -61,18 +60,34 @@ function drawenemy(){
 }
 
 function enemymovement(){
-    var a = Math.floor((enemy[0].x-15)/45)*45 + 75;
-    var b = Math.floor((enemy[0].x+30)/45)*45 - 75;
-    
-    if (room[whichRoomX(enemy[0].x)][whichRoomY(enemy[0].y)].w==true && room[whichRoomX(enemy[0].x)][whichRoomY(enemy[0].y)].e==false){
-        enemy[0].xtarget = b;
-            if (enemy[0].xtarget!=enemy[0].x){enemy[0].x--;}
+    for(var i=0;i<enemy.length;i++){
+        if(enemy[i].xtarget==null || enemy[i].ytarget==null)
+            generateTarget(enemy[i]);
+        //Go towards target
     }
-    else if (room[whichRoomX(enemy[0].x)][whichRoomY(enemy[0].y)].w==false &&
-             room[whichRoomX(enemy[0].x)][whichRoomY(enemy[0].y)].e==true){
-             enemy[0].xtarget = a;
-            if (enemy[0].xtarget!=enemy[0].x){enemy[0].x++;}
+}
+function generateTarget(enemy){
+    enemy.xtarget=null;
+    enemy.ytarget=null;
+    var roomX=whichRoomX(enemy.x);
+    var roomY=whichRoomY(enemy.y);
+    while(enemy.xtarget==null && enemy.ytarget==null){
+        var temp=Math.floor(Math.random()*4);
+        if(temp==0 && room[roomX][roomY].w){
+            enemy.xtarget=roomX-1;
+            enemy.ytarget=roomY;
+        }else if(temp==1 && room[roomX][roomY].n){
+            enemy.xtarget=roomX;
+            enemy.ytarget=roomY-1;
+        }else if(temp==2 && room[roomX][roomY].e){
+            enemy.xtarget=roomX+1;
+            enemy.ytarget=roomY;
+        }else if(temp==3 && room[roomX][roomY].s){
+            enemy.xtarget=roomX;
+            enemy.ytarget=roomY+1;
+        }
     }
+    console.log(enemy.xtarget+" "+enemy.ytarget);
 }
 
 function UWIN(){
