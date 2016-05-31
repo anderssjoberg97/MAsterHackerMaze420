@@ -5,125 +5,165 @@ function init(x, y){
 var level = 0;
 var walls1 = [0, 45, 90, 135, 180, 225, 270, 315];
 var walls2 = [45, 90, 135, 180, 225, 270, 315, 360];
-var rectangle = {x: 0, y: 0, x2: 0, y2: 0};
-var x=0;
-var y=0;
-var xx = 0;
-var yy = 0;
+var rectangle = {x: 0, y: 0,};
 var room = [];
-
-    
+var i;
+var enemy = [];
+var path;
 
 function start()
 {
     level++;
     InitMaze();
+    debugger
+    spawnenemy();
     rectangle.x = totalWidth-30;
     rectangle.y = totalHeight-30;
-    rectangle.x2 = totalWidth-12;
-    rectangle.y2 = totalHeight-12;
     update();
     
     
 }
 
-
 function update()
 {
     drawMaze();
-
-    
     if (keyboard.left) {Left(); ctx.clearRect(rectangle.x, rectangle.y, 20, 20);}
     if (keyboard.right) {Right();ctx.clearRect(rectangle.x, rectangle.y, 20, 20);}
     if (keyboard.up) {Up();ctx.clearRect(rectangle.x, rectangle.y, 20, 20);}
     if (keyboard.down) {Down();ctx.clearRect(rectangle.x, rectangle.y, 20, 20);}
-    
     rectangle(rectangle.x, rectangle.y, 20, 20, "blue");
+    drawenemy();
+    enemymovement();
     rectangle(0,0,45,45,"green");
-    rectangle(rectangle.x,rectangle.y,2,2,"red")
-    rectangle(rectangle.x2,rectangle.y2,2,2,"red")
     if (rectangle.x < 30 && rectangle.y < 30){
         UWIN();
-        clearScreen();
-        
     }
     
 }
 
+function spawnenemy(){
+    if (level == 1){
+        enemy[0]={x:195, y:195, xtarget: 0, ytarget: 0, direction:0};
+        enemy[1]={x:285, y:105, xtarget: 0, ytarget: 0, direction:0};
+    }
+    else if (level == 2){}
+    else if (level == 3){}
+    else if (level == 4){}
+    else if (level == 5){}
+    else if (level == 6){}
+    else {UWIN();}
+}
+
+function drawenemy(){
+    for (var i=0; i<(level+1);i++){
+        rectangle(enemy[i].x,enemy[i].y,15,15,"orange");
+    }
+}
+
+function enemymovement(){
+    var a = Math.floor((enemy[0].x-15)/45)*45 + 75;
+    var b = Math.floor((enemy[0].x+30)/45)*45 - 75;
+    
+    if (room[whichRoomX(enemy[0].x)][whichRoomY(enemy[0].y)].w==true && room[whichRoomX(enemy[0].x)][whichRoomY(enemy[0].y)].e==false){
+        enemy[0].xtarget = b;
+            if (enemy[0].xtarget!=enemy[0].x){enemy[0].x--;}
+    }
+    else if (room[whichRoomX(enemy[0].x)][whichRoomY(enemy[0].y)].w==false &&
+             room[whichRoomX(enemy[0].x)][whichRoomY(enemy[0].y)].e==true){
+             enemy[0].xtarget = a;
+            if (enemy[0].xtarget!=enemy[0].x){enemy[0].x++;}
+    }
+}
+
 function UWIN(){
     clearScreen();
-    text(10,100,20,"Congratz, beat level:"+level, "gold")
+    text(10,100,20,"Ät bajs :D", "gold");
 }
 function whichRoomX(x){
+    var xx = Math.floor(x/(canvas.width/room.length));
     return Math.floor(x/(canvas.width/room.length));
 }
 function whichRoomY(y){
+    var yy = Math.floor(y/(canvas.height/room[0].length));
     return Math.floor(y/(canvas.height/room[0].length));
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function Left(){
     if(whichRoomX(rectangle.x-3)==whichRoomX(rectangle.x)){
         rectangle.x-=3;
     }else if(room[whichRoomX(rectangle.x)][whichRoomY(rectangle.y)].w && room[whichRoomX(rectangle.x)][whichRoomY(rectangle.y+20)].w){
-        rectangle.x-=3;
+        if(whichRoomY(rectangle.y)==whichRoomY(rectangle.y+20)){
+            rectangle.x-=3;
+        }else{
+            rectangle.x-=rectangle.x-(whichRoomX(rectangle.x)*((canvas.width/room.length)));
+        }
     }else{
         rectangle.x-=rectangle.x-(whichRoomX(rectangle.x)*((canvas.width/room.length)));
     }
 }
 
 function Right(){
-    if (room[x][y].e == false && walls2.indexOf((rectangle.x+23)) != -1){
-        rectangle.x+=2;
-        rectangle.x2+=2;
-
+    if(whichRoomX(rectangle.x+23)==whichRoomX(rectangle.x+20)){
+        rectangle.x+=3;
+    }else if(room[whichRoomX(rectangle.x+20)][whichRoomY(rectangle.y)].e && room[whichRoomX(rectangle.x+20)][whichRoomY(rectangle.y+20)].e){
+        if(whichRoomY(rectangle.y)==whichRoomY(rectangle.y+20)){
+            rectangle.x+=3;
+        }else{
+            rectangle.x+=((whichRoomX(rectangle.x)+1)*((canvas.width/room.length)))-rectangle.x-20-1;
+        }
+    }else{
+        rectangle.x+=((whichRoomX(rectangle.x)+1)*((canvas.width/room.length)))-rectangle.x-20-1;
     }
-    else if (room[x][y].e == false && walls2.indexOf((rectangle.x+22)) != -1){
-        rectangle.x++;
-        rectangle.x2++;
-    }
-    else if (room[x][y].e == false && walls2.indexOf((rectangle.x+21)) != -1||
-             room[xx][yy].e == false && walls2.indexOf((rectangle.x2+3)) != -1 ||
-             room[x+1][y].s == false && room[x][y] != room[x][yy] && rectangle.x+21==(x+1)*45 ){
-        rectangle.x+=0;
-        rectangle.x2+=0;
-    }
-    else {rectangle.x+=3;rectangle.x2+=3;}
 }
 
+
 function Up(){
-    if (room[x][y].n == false && walls1.indexOf((rectangle.y-3)) != -1){
-        rectangle.y-=2;
-        rectangle.y2-=2;
+    if(whichRoomY(rectangle.y)==whichRoomY(rectangle.y-3)){
+        rectangle.y-=3;
+    }else if(room[whichRoomX(rectangle.x)][whichRoomY(rectangle.y)].n && room[whichRoomX(rectangle.x+20)][whichRoomY(rectangle.y)].n){
+        if(whichRoomX(rectangle.x)==whichRoomX(rectangle.x+20)){
+            rectangle.y-=3;
+        }else{
+            rectangle.y-=rectangle.y-((whichRoomY(rectangle.y))*((canvas.height/room[0].length)));
+        }
+    }else{
+        rectangle.y-=rectangle.y-((whichRoomY(rectangle.y))*((canvas.height/room[0].length)));
     }
-    else if (room[x][y].n == false && walls1.indexOf((rectangle.y-2)) != -1){
-        rectangle.y--;
-        rectangle.y2--;
-    }
-    else if (room[x][y].n == false && walls1.indexOf((rectangle.y-1)) != -1 ||
-             room[xx][yy].n == false && walls1.indexOf((rectangle.y2-19)) != -1||
-        room[x][y-1].e == false && room[x][y] != room[xx][y] && rectangle.y-1==y*45){
-        rectangle.y-=0;
-        rectangle.y2-=0;
-    }
-    else {rectangle.y-=3;rectangle.y2-=3;}
 }
 
 function Down(){
-    if (room[x][y].s == false && walls2.indexOf((rectangle.y+23)) != -1){
-        rectangle.y+=2;
-        rectangle.y2+=2;
+   if(whichRoomY(rectangle.y+20)==whichRoomY(rectangle.y+23)){
+        rectangle.y+=3;
+    }else if(room[whichRoomX(rectangle.x)][whichRoomY(rectangle.y+20)].s && room[whichRoomX(rectangle.x+20)][whichRoomY(rectangle.y+20)].s){
+        if(whichRoomX(rectangle.x)==whichRoomX(rectangle.x+20)){
+            rectangle.y+=3;
+        }else{
+            rectangle.y+=((whichRoomY(rectangle.y)+1)*((canvas.height/room[0].length)))-rectangle.y-20-1;
+        }
+    }else{
+        rectangle.y+=((whichRoomY(rectangle.y)+1)*((canvas.height/room[0].length)))-rectangle.y-20-1;
     }
-    else if (room[x][y].s == false && walls2.indexOf((rectangle.y+22)) != -1){
-        rectangle.y++;
-        rectangle.y2++;
-    }
-    else if (room[x][y].s == false && walls2.indexOf((rectangle.y+21)) != -1 ||
-             room[xx][yy].s == false && walls2.indexOf((rectangle.y2+3)) != -1 ||
-             room[x][y+1].e == false && room[x][y] != room[xx][y] && rectangle.y+21==(y+1)*45){
-        rectangle.y+=0;
-        rectangle.y2+=0;
-    }
-    else {rectangle.y+=3;rectangle.y2+=3;}
 }
 
 
@@ -356,11 +396,6 @@ function drawMaze() {
     
     
 }
-
-
-
-
-
 
 
 
